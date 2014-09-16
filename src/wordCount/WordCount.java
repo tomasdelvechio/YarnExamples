@@ -57,6 +57,7 @@ public class WordCount {
         job.setOutputValueClass(IntWritable.class);
         
         job.setMapperClass(Map.class);
+        job.setCombinerClass(Reduce.class);
         job.setReducerClass(Reduce.class);
         
         job.setInputFormatClass(TextInputFormat.class);
@@ -64,6 +65,8 @@ public class WordCount {
         
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        
+        job.setNumReduceTasks(4);
         
         job.waitForCompletion(true);
     }
