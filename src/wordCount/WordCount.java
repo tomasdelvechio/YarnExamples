@@ -14,45 +14,24 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
-public class WordCount {
-    
-    public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
-        private final static IntWritable one = new IntWritable(1);
-        private Text word = new Text();
-        
-        @Override
-        public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String line = value.toString();
-            StringTokenizer tokenizer = new StringTokenizer(line);
-            while (tokenizer.hasMoreTokens()) {
-                word.set(tokenizer.nextToken());
-                context.write(word, one);
-            }
-        }
-    }
-    
-    public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
-        
-        @Override
-        public void reduce(Text key, Iterable<IntWritable> values, Context context)
-          throws IOException, InterruptedException {
-            int sum = 0;
-            for (IntWritable val : values) {
-                sum += val.get();
-            }
-            context.write(key, new IntWritable(sum));
-        }
-    }
-    
+public class WordCount extends Configured implements Tool {
+ 
     public static void main(String[] args) throws Exception {
-        Configuration conf = new Configuration();
+        int res = ToolRunner.run(new Configuration(), new WordCount(), args);
+        System.exit(res);
+    }
+    
+    @Override
+    public int run(String[] args) throws Exception {
+ 
+        Configuration conf = this.getConf();
         
-        //Job job = new Job(conf, "wordcount");
         Job job = Job.getInstance(conf);
-        
         job.setJarByClass(WordCount.class);
-        
+ 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
         
@@ -65,9 +44,7 @@ public class WordCount {
         
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
-        
-        job.setNumReduceTasks(4);
-        
-        job.waitForCompletion(true);
+ 
+        return job.waitForCompletion(true) ? 0 : 1;
     }
 }
