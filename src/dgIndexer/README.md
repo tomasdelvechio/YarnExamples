@@ -4,13 +4,15 @@ This is my interpretation of D&G[1] MapReduce Indexing, based on pseudo-code pre
 
 The implementation is based on Hadoop 2.5.0. The Code is tested and run.
 
-The Posting list generated at the moment is too simple, the format is:
+The Posting list generated contain term, doc id and term frequency and the format is:
 
 ```
-word\tdocId1,docId4,docId1,docId3...
+house\t{docId1=Freq1, docId2=Freq2, docId3=Freq3, docId4=Freq4}
 ```
 
-The file is sorted by word, but the postings are not order by document Id yet. This is a feature to be added in the future. Furthermore, the document Id sometimes is repeating. This bug also fix.
+The file is sorted by word and docId. In the future, will be implemented an order by Freq (i.e. support early termination retrieval)
+
+The index output is too much excessive in the control characters. Futures commits will be fix this.
 
 # References 
 

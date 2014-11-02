@@ -17,12 +17,11 @@
 package dgIndexer;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -33,12 +32,18 @@ public class DgReduce extends Reducer<Text, IntWritable, Text, Text> {
     @Override
     public void reduce(Text term, Iterable<IntWritable> docIds, Context context)
       throws IOException, InterruptedException {
-        ArrayList<IntWritable> postingList = new ArrayList<IntWritable>();
+        Map<IntWritable,Integer> postingList;
+        postingList = new TreeMap<IntWritable,Integer>();
         for (IntWritable docId : docIds) {
-            postingList.add(new IntWritable(Integer.parseInt(docId.toString())));
+            docId = new IntWritable(Integer.parseInt(docId.toString()));
+            if (postingList.containsKey(docId)) {
+                int counter = postingList.get(docId);
+                postingList.put(docId, counter+1);
+            } else {
+                postingList.put(docId, 1);
+            }
         }
-        Collections.sort(postingList, null);
-        String posting = Arrays.toString(postingList.toArray());
+        String posting = postingList.toString();
         context.write(new Text(term), new Text(posting));
     }
 }
