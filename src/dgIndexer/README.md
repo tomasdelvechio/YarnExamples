@@ -10,9 +10,19 @@ The Posting list generated contain term, doc id and term frequency and the forma
 house\t{docId1=Freq1, docId2=Freq2, docId3=Freq3, docId4=Freq4}
 ```
 
-The file is sorted by word and docId. In the future, will be implemented an order by Freq (i.e. support early termination retrieval)
+The file is sorted by word and docId. In the future, will be implemented an order by Freq (i.e. support early termination techniques for retrieval)
 
 The index output is too much excessive in the control characters. Futures commits will be fix this.
+
+ToDo List:
+
+ * Test the code with a large collection
+ * Minimize the representation of posting list
+  * Delete unnecessary characters
+  * Apply DocId Compresion or gap
+ * Stemming (integrate [Snowball](http://snowball.tartarus.org/))
+ * Delete Stopwords
+ * Represent DocIds by Side effects file[2] in map method.
 
 # References 
 
