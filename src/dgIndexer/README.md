@@ -23,6 +23,7 @@ ToDo List:
  * Stemming (integrate [Snowball](http://snowball.tartarus.org/))
  * Delete Stopwords
  * Represent DocIds by Side effects file[2] in map method.
+ * The DocId Sort it does in reduce method. Will be implemented a technique which allow does the sort using the Sort phase of MapReduce.
 
 # References 
 
