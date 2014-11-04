@@ -16,12 +16,12 @@ The index output is too much excessive in the control characters. Futures commit
 
 ToDo List:
 
- * Test the code with a large collection (issue #9)
- * Minimize the representation of posting list (issue #10)
+ * Test the code with a large collection ([issue #9](https://github.com/tomasdelvechio/YarnExamples/issues/9))
+ * Minimize the representation of posting list ([issue #10](https://github.com/tomasdelvechio/YarnExamples/issues/10))
   * Delete unnecessary characters
   * Apply DocId Compresion or gap
- * Stemming (integrate [Snowball](http://snowball.tartarus.org/)) (issue #11)
- * Delete Stopwords (issue #12)
+ * Stemming (integrate [Snowball](http://snowball.tartarus.org/)) ([issue #11](https://github.com/tomasdelvechio/YarnExamples/issues/11))
+ * Delete Stopwords ([issue #12](https://github.com/tomasdelvechio/YarnExamples/issues/12))
  * Represent DocIds by Side effects file[2] in map method.
  * The DocId Sort it does in reduce method. Will be implemented a technique which allow does the sort using the Sort phase of MapReduce.
 
