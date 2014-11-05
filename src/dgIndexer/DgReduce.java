@@ -35,7 +35,8 @@ public class DgReduce extends Reducer<Text, IntWritable, Text, Text> {
         Map<IntWritable,Integer> postingList;
         postingList = new TreeMap<IntWritable,Integer>();
         for (IntWritable docId : docIds) {
-            docId = new IntWritable(Integer.parseInt(docId.toString()));
+            //docId = new IntWritable(Integer.parseInt(docId.toString()));
+            docId = new IntWritable(docId.get());
             if (postingList.containsKey(docId)) {
                 int counter = postingList.get(docId);
                 postingList.put(docId, counter+1);
