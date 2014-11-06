@@ -71,13 +71,13 @@ public class TrecOLParser {
             // Obtener DocId
             int startDocIdIdx = trecLine.indexOf(TrecOLParser.startDocIdTag) + TrecOLParser.startDocIdTag.length();
             int endDocIdIdx = trecLine.indexOf(TrecOLParser.endDocIdTag);
-
+            
             this.docId = trecLine.substring(startDocIdIdx, endDocIdIdx);
 
             // Recuperar contenido del Documento
             int startDocContentIdx = trecLine.indexOf(TrecOLParser.endDocIdTag) + TrecOLParser.endDocIdTag.length();
             int endDocContentIdx = trecLine.indexOf(TrecOLParser.endDocTag);
-
+            
             this.docContent = trecLine.substring(startDocContentIdx, endDocContentIdx);
         } else {
             this.docId = null;
