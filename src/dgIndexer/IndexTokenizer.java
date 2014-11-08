@@ -50,20 +50,30 @@ public class IndexTokenizer {
      * This method return the next token, skipping others not valid tokens.
      * @return  term Text The next valid token
      */
-    public Text nextToken() {
+    public String nextToken() {
+        String token = null;
         while (this.hasMoreTokens()) {
-            term.set(this.tokenizer.nextToken());
-            // [ToDo] Stemming (?)
-            // [ToDo] Check if word is Stopword
-            if (minLongTerm <= term.toString().length()) {
+            String candidateToken = this.builToken(this.tokenizer.nextToken());
+            if (this.isValidToken(candidateToken)) {
+                token = candidateToken;
                 break;
             }
         }
         
-        return term;
+        return token;
     }
     
     public boolean hasMoreTokens() {
         return this.tokenizer.hasMoreTokens();
+    }
+    
+    public boolean isValidToken(String token) {
+        // [ToDo] Check if word is Stopword
+        return minLongTerm <= token.length();
+    }
+    
+    public String builToken(String candidateToken) {
+        // [ToDo] Stemming (?)
+        return candidateToken;
     }
 }
