@@ -16,27 +16,28 @@
  */
 package dgIndexer;
 
-import java.io.IOException;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Reducer;
 import java.util.Map;
 import java.util.TreeMap;
+import org.apache.hadoop.io.IntWritable;
 
 /**
  *
  * @author tomas
  */
-public class DgReduce extends Reducer<Text, IntWritable, Text, Text> {
-        
-    @Override
-    public void reduce(Text term, Iterable<IntWritable> docIds, Context context)
-      throws IOException, InterruptedException {
-        PostingList postingList = new PostingList();
-        for (IntWritable docId : docIds) {
-            postingList.addPosting(docId.get());
+public class PostingList {
+    Map<Integer,Integer> postingList = new TreeMap<Integer,Integer>();
+    
+    public void addPosting(Integer docId) {
+        int counter = 0;
+        if (this.postingList.containsKey(docId)) {
+            counter = this.postingList.get(docId);
         }
-        String posting = postingList.toString();
-        context.write(new Text(term), new Text(posting));
+        this.postingList.put(docId, counter+1);
     }
+    
+    @Override
+    public String toString() {
+        return this.postingList.toString();
+    }
+    
 }
