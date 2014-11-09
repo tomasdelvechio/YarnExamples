@@ -16,8 +16,8 @@
  */
 package dgIndexer;
 
+import java.io.IOException;
 import java.util.StringTokenizer;
-import org.apache.hadoop.io.Text;
 
 /**
  * This class receive a string of chars and apply the tokenize policy
@@ -25,14 +25,16 @@ import org.apache.hadoop.io.Text;
  * @author tomas
  */
 public class IndexTokenizer {
-    
-    // token delimitator
-    String delims = " .,?!_()[]{}";
-    
-    // Longitud minima de termino
-    int minLongTerm = 3;
+    String delims;
+    int minLongTerm;
     private StringTokenizer tokenizer;
-    private final Text term = new Text();
+    StopWords stopWord;
+
+    public IndexTokenizer() throws IOException {
+        this.delims = " .,?!_()[]{}";
+        this.minLongTerm = 3;
+        this.stopWord = new StopWords();
+    }
     
     /**
      * This method split the line, low case the term and generate the Iterator.
@@ -67,13 +69,19 @@ public class IndexTokenizer {
         return this.tokenizer.hasMoreTokens();
     }
     
+    /**
+     * Check if token is valid for this tokenizer
+     * @param token String The token to be evaluated
+     * @return boolean The evaluation of several criteria
+     */
     public boolean isValidToken(String token) {
-        // [ToDo] Check if word is Stopword
-        return minLongTerm <= token.length();
+        boolean isStopWord = this.stopWord.isStopWord(token);
+        boolean isValidLong = minLongTerm <= token.length();
+        return (!isStopWord && isValidLong);
     }
     
     public String builToken(String candidateToken) {
         // [ToDo] Stemming (?)
-        return candidateToken;
+        return candidateToken.trim();
     }
 }
