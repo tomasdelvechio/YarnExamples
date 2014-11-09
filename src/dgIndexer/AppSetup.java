@@ -16,27 +16,26 @@
  */
 package dgIndexer;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
- *
+ * Class for setup all parameters for the application.
  * @author tomas
  */
-public class PostingList {
-    Map<Integer,Integer> postingList = new TreeMap<Integer,Integer>();
+public final class AppSetup {
     
-    public void addPosting(Integer docId) {
-        int counter = 0;
-        if (this.postingList.containsKey(docId)) {
-            counter = this.postingList.get(docId);
-        }
-        this.postingList.put(docId, counter+1);
+    static Map<String, String> appParameters;
+    
+    static {
+        AppSetup.appParameters = new HashMap<String, String>();
+        
+        String workingDir = System.getProperty("user.dir");
+        AppSetup.appParameters.put("APP_HOME", workingDir);
+        //AppSetup.appParameters.put("SW_FILE_PATH", workingDir + "/share/stop-word.txt");
     }
     
-    @Override
-    public String toString() {
-        return this.postingList.toString();
+    static public String getParameter(String keyParameter) {
+        return AppSetup.appParameters.get(keyParameter);
     }
-    
 }

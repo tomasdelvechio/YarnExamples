@@ -27,7 +27,11 @@ import org.apache.hadoop.mapreduce.Mapper;
  * @author tomas
  */
 public class DgMap extends Mapper<LongWritable, Text, Text, IntWritable> {
-    IndexTokenizer tokenizer = new IndexTokenizer();
+    IndexTokenizer tokenizer;
+
+    public DgMap() throws IOException {
+        this.tokenizer = new IndexTokenizer();
+    }
     
     @Override
     public void map(LongWritable key, Text value, Mapper.Context context) throws IOException, InterruptedException {
@@ -36,8 +40,7 @@ public class DgMap extends Mapper<LongWritable, Text, Text, IntWritable> {
             this.tokenizer.tokenize(document.getDocContent());
             while (this.tokenizer.hasMoreTokens()) {
                 String term = this.tokenizer.nextToken();
-                if (term == null) {
-                } else {
+                if (term != null) {
                     context.write(new Text(term), new IntWritable(Integer.parseInt(document.getDocId())));
                 }
             }
