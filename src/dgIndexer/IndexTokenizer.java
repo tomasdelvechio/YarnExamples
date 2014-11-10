@@ -21,7 +21,8 @@ import java.util.StringTokenizer;
 
 /**
  * This class receive a string of chars and apply the tokenize policy
- * 
+ * <p>
+ * The class is instantiated and could be used many times for tokenize several lines.
  * @author tomas
  */
 public class IndexTokenizer {
@@ -67,6 +68,10 @@ public class IndexTokenizer {
         return token;
     }
     
+    /**
+     * Method for consult if some token is present
+     * @return boolean return True if some token is present, False in other case
+     */
     public boolean hasMoreTokens() {
         return this.tokenizer.hasMoreTokens();
     }

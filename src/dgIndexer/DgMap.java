@@ -23,7 +23,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 /**
- *
+ * Mapper class for the D&G approach
  * @author tomas
  */
 public class DgMap extends Mapper<LongWritable, Text, Text, IntWritable> {

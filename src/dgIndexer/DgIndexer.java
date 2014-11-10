@@ -28,11 +28,25 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 /**
- *
+ * DgIndexer implements a Indexer build tool with the Dean and Ghemawat paper
+ * <p>
+ * The MapReduce original article is the base of the Hadoop MapReduce Framework.
+ * Dean and Ghemawat present in 2004 the main concepts about MR. In the same
+ * article, to be proposed an approach to build Inverted Indexes with MapReduce.
+ * <p>
+ * This implementation is a likely interpretation of the D&G article.
+ * 
+ * @version 1
+ * @since 1
  * @author tomas
  */
 public class DgIndexer extends Configured implements Tool {
     
+    /**
+     * The main method for execute the Index Builder.
+     * @param args String[] The parameters passed to application
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         int res;
         res = ToolRunner.run(new Configuration(), new DgIndexer(), args);

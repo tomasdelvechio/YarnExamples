@@ -22,7 +22,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 /**
- *
+ * Reducer class for the D&G approach
  * @author tomas
  */
 public class DgReduce extends Reducer<Text, IntWritable, Text, Text> {
