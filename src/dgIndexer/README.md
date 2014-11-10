@@ -7,7 +7,7 @@ The implementation is based on Hadoop 2.5.0. The Code is tested and run.
 The Posting list generated contain term, doc id and term frequency and the format is:
 
 ```
-house\t{docId1=Freq1, docId2=Freq2, docId3=Freq3, docId4=Freq4}
+house\tdocId1=Freq1,docId2=Freq2,docId3=Freq3,docId4=Freq4...
 ```
 
 The file is sorted by word and docId. In the future, will be implemented an order by Freq (i.e. support early termination techniques for retrieval)

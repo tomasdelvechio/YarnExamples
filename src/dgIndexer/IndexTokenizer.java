@@ -32,7 +32,7 @@ public class IndexTokenizer {
     Stemmer stemmer;
 
     public IndexTokenizer() throws IOException {
-        this.delims = " .,?!_()[]{}";
+        this.delims = " .,?!_()[]{}\"";
         this.minLongTerm = 3;
         this.stopWord = new StopWords();
         this.stemmer = new Stemmer();

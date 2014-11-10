@@ -51,7 +51,6 @@ public class DgIndexer extends Configured implements Tool {
         job.setOutputValueClass(IntWritable.class);
         
         job.setMapperClass(DgMap.class);
-        //job.setCombinerClass(DgReduce.class);
         job.setReducerClass(DgReduce.class);
         
         job.setInputFormatClass(TextInputFormat.class);

@@ -36,7 +36,10 @@ public class PostingList {
     
     @Override
     public String toString() {
-        return this.postingList.toString();
+        String posting = this.postingList.toString();
+        posting = posting.replace("{", "").replace("}", "");
+        posting = posting.replace(" ", "");
+        return posting;
     }
     
 }
