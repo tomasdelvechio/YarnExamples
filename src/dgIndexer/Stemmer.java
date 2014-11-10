@@ -17,7 +17,7 @@
 
 package dgIndexer;
 
-import org.tartarus.snowball.ext.englishStemmer;
+import lib.org.tartarus.snowball.ext.englishStemmer;
 
 /**
  *
