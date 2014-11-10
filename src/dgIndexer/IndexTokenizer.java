@@ -29,11 +29,13 @@ public class IndexTokenizer {
     int minLongTerm;
     private StringTokenizer tokenizer;
     StopWords stopWord;
+    Stemmer stemmer;
 
     public IndexTokenizer() throws IOException {
         this.delims = " .,?!_()[]{}";
         this.minLongTerm = 3;
         this.stopWord = new StopWords();
+        this.stemmer = new Stemmer();
     }
     
     /**
@@ -81,7 +83,7 @@ public class IndexTokenizer {
     }
     
     public String builToken(String candidateToken) {
-        // [ToDo] Stemming (?)
-        return candidateToken.trim();
+        candidateToken = stemmer.stemmToken(candidateToken.trim());
+        return candidateToken;
     }
 }
