@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package dgIndexer;
+package IndexingCommons;
 
 import lib.org.tartarus.snowball.ext.englishStemmer;
 
