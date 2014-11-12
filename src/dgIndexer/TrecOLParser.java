@@ -46,7 +46,7 @@ public class TrecOLParser {
      * @return String docId Document Id.
      */
     public String getDocId() {
-        return docId;
+        return this.docId;
     }
     
     /**
@@ -57,7 +57,7 @@ public class TrecOLParser {
      * @return String docContent Content of document.
      */
     public String getDocContent() {
-        return docContent;
+        return this.docContent;
     }
     
     /**

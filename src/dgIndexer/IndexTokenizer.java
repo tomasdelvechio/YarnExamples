@@ -18,6 +18,7 @@ package dgIndexer;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 /**
  * This class receive a string of chars and apply the tokenize policy
@@ -31,9 +32,9 @@ public class IndexTokenizer {
     private StringTokenizer tokenizer;
     StopWords stopWord;
     Stemmer stemmer;
+    private static final Pattern REGEX_PATTERN = Pattern.compile("[^\\p{Alnum}]+");
 
     public IndexTokenizer() throws IOException {
-        this.delims = " .,?!_()[]{}\"";
         this.minLongTerm = 3;
         this.stopWord = new StopWords();
         this.stemmer = new Stemmer();
@@ -48,7 +49,8 @@ public class IndexTokenizer {
      */
     public void tokenize(String line) {
         line = line.toLowerCase();
-        this.tokenizer = new StringTokenizer(line, delims);
+        line = REGEX_PATTERN.matcher(line).replaceAll(" ");
+        this.tokenizer = new StringTokenizer(line);
     }
     
     /**
