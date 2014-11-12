@@ -14,32 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package IndexingCommons;
 
-import java.util.Map;
-import java.util.TreeMap;
+package indexingCommons;
+
+import lib.org.tartarus.snowball.ext.englishStemmer;
 
 /**
  *
  * @author tomas
  */
-public class PostingList {
-    Map<Integer,Integer> postingList = new TreeMap<Integer,Integer>();
+public class Stemmer {
+    englishStemmer stemmer;
+
+    public Stemmer() {
+        this.stemmer = new englishStemmer();
+    }
     
-    public void addPosting(Integer docId) {
-        int counter = 0;
-        if (this.postingList.containsKey(docId)) {
-            counter = this.postingList.get(docId);
+    public String stemmToken(String token) {
+        stemmer.setCurrent(token);
+        if (stemmer.stem()){
+            return stemmer.getCurrent();
         }
-        this.postingList.put(docId, counter+1);
+        return null;
     }
-    
-    @Override
-    public String toString() {
-        String posting = this.postingList.toString();
-        posting = posting.replace("{", "").replace("}", "");
-        posting = posting.replace(" ", "");
-        return posting;
-    }
-    
+
 }

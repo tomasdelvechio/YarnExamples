@@ -16,8 +16,8 @@
  */
 package dgIndexer;
 
-import IndexingCommons.TrecOLParser;
-import IndexingCommons.IndexTokenizer;
+import indexingCommons.TrecOLParser;
+import indexingCommons.IndexTokenizer;
 import java.io.IOException;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
