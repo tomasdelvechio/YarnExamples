@@ -35,7 +35,7 @@ public class DgReduce extends Reducer<Text, IntWritable, Text, Text> {
         for (IntWritable docId : docIds) {
             postingList.addPosting(docId.get());
         }
-        String posting = postingList.toString();
+        String posting = postingList.toStringDE();
         context.write(new Text(term), new Text(posting));
     }
 }
