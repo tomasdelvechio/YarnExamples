@@ -16,6 +16,7 @@
  */
 package indexingCommons;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -36,9 +37,40 @@ public class PostingList {
     
     @Override
     public String toString() {
-        String posting = this.postingList.toString();
-        posting = posting.replace("{", "").replace("}", "");
-        posting = posting.replace(" ", "");
+        String posting = "";
+        for (Map.Entry<Integer, Integer> entry : this.postingList.entrySet()) {
+            posting += entry.getKey() + ":" + entry.getValue() + ";";
+        }
+        
+        if (posting.length() > 0 && posting.charAt(posting.length()-1)==';') {
+            posting = posting.substring(0, posting.length()-1);
+        }
+        
+        return posting;
+    }
+    
+    /**
+     * Method for print the posting list with delta encoding gaps for DocId
+     * @return posting String Return the posting with Delta-Encoding
+     */
+    public String toStringDE() {
+        String posting = "";
+        Integer docIdAnt = -1;
+        
+        for (Map.Entry<Integer, Integer> postingEntry : this.postingList.entrySet()) {
+            if (docIdAnt == -1) {
+                docIdAnt = postingEntry.getKey();
+                posting += docIdAnt + ":" + postingEntry.getValue() + ";";
+            } else {
+                posting += postingEntry.getKey() - docIdAnt + ":" + postingEntry.getValue() + ";";
+                docIdAnt = postingEntry.getKey();
+            }
+        }
+        
+        if (posting.length() > 0 && posting.charAt(posting.length()-1)==';') {
+            posting = posting.substring(0, posting.length()-1);
+        }
+        
         return posting;
     }
     
