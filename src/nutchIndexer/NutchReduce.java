@@ -16,26 +16,35 @@
  */
 package nutchIndexer;
 
+import indexingCommons.InvertedIndex;
 import indexingCommons.PostingList;
 import java.io.IOException;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Reducer;
 
 /**
  * Reducer class for the Nutch approach
  * @author tomas
  */
-public class NutchReduce extends Reducer<Text, IntWritable, Text, Text> {
-        
-    @Override
-    public void reduce(Text term, Iterable<IntWritable> docIds, Context context)
+public class NutchReduce extends Reducer<IntWritable, MapWritable, Text, Text> {
+    InvertedIndex invertedIndex;
+
+    public NutchReduce() {
+        this.invertedIndex = new InvertedIndex();
+    }
+    
+    public void reduce(IntWritable docId, MapWritable documentAnalyzed, Context context)
       throws IOException, InterruptedException {
         PostingList postingList = new PostingList();
-        for (IntWritable docId : docIds) {
+        for (MapWritable.Entry<Writable, Writable> termEntry : documentAnalyzed.entrySet()) {
+            Text term = (Text) termEntry.getKey();
+            IntWritable freq = (IntWritable) termEntry.getValue();
             postingList.addPosting(docId.get());
         }
         String posting = postingList.toStringDE();
-        context.write(new Text(term), new Text(posting));
+        context.write(term, new Text(posting));
     }
 }

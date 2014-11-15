@@ -74,4 +74,8 @@ public class PostingList {
         return posting;
     }
     
+    public void mergePosting(PostingList newPosting) {
+        this.postingList.putAll(newPosting);
+    }
+    
 }

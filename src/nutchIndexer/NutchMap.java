@@ -18,9 +18,11 @@ package nutchIndexer;
 
 import indexingCommons.TrecOLParser;
 import indexingCommons.IndexTokenizer;
+import indexingCommons.CastingTypes;
 import java.io.IOException;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
@@ -28,11 +30,16 @@ import org.apache.hadoop.mapreduce.Mapper;
  * Mapper class for the Nutch approach
  * @author tomas
  */
-public class NutchMap extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class NutchMap extends Mapper<LongWritable, Text, IntWritable, MapWritable> {
     IndexTokenizer tokenizer;
+    MapWritable documentAnalyzed;
+    CastingTypes ct = new CastingTypes();
+    IntWritable cero = ct.intToIntWr(0);
+    IntWritable uno = ct.intToIntWr(1);
 
     public NutchMap() throws IOException {
         this.tokenizer = new IndexTokenizer();
+        this.documentAnalyzed = new MapWritable();
     }
     
     @Override
@@ -41,10 +48,15 @@ public class NutchMap extends Mapper<LongWritable, Text, Text, IntWritable> {
         if (document.isParsed()) {
             this.tokenizer.tokenize(document.getDocContent());
             while (this.tokenizer.hasMoreTokens()) {
-                String term = this.tokenizer.nextToken();
-                if (term != null) {
-                    context.write(new Text(term), new IntWritable(Integer.parseInt(document.getDocId())));
+                IntWritable counter = cero;
+                Text term = new Text(this.tokenizer.nextToken());
+                if (this.documentAnalyzed.containsKey(term)) {
+                    counter = (IntWritable)this.documentAnalyzed.get(term);
                 }
+                this.documentAnalyzed.put(term, ct.intToIntWr(counter.get()+1));
+            }
+            if ( ! this.documentAnalyzed.isEmpty()) {
+                context.write(new IntWritable(Integer.parseInt(document.getDocId())), this.documentAnalyzed);
             }
         }
     }
