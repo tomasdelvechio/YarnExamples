@@ -49,11 +49,28 @@ public class NutchMap extends Mapper<LongWritable, Text, IntWritable, MapWritabl
             this.tokenizer.tokenize(document.getDocContent());
             while (this.tokenizer.hasMoreTokens()) {
                 IntWritable counter = cero;
-                Text term = new Text(this.tokenizer.nextToken());
-                if (this.documentAnalyzed.containsKey(term)) {
-                    counter = (IntWritable)this.documentAnalyzed.get(term);
+                String newTerm = this.tokenizer.nextToken();
+                if( ! (newTerm == null) ) {
+                    Text term = new Text(newTerm);
+                    if (this.documentAnalyzed.containsKey(term)) {
+                        counter = (IntWritable)this.documentAnalyzed.get(term);
+                    }
+                    this.documentAnalyzed.put(term, ct.intToIntWr(counter.get()+1));
+                } else {
+                    System.out.println("Doc Id");
+                    System.out.println(document.getDocId());
+                    System.out.println("Termino");
+                    System.out.println(newTerm);
                 }
-                this.documentAnalyzed.put(term, ct.intToIntWr(counter.get()+1));
+                /*Text term = null;
+                try {
+                    term = new Text(this.tokenizer.nextToken());
+                } catch (NullPointerException e) {
+                    System.out.println("Exception");
+                    System.out.println(document.getDocId());
+                }*/
+                
+                
             }
             if ( ! this.documentAnalyzed.isEmpty()) {
                 context.write(new IntWritable(Integer.parseInt(document.getDocId())), this.documentAnalyzed);

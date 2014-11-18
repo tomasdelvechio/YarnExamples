@@ -16,9 +16,9 @@
  */
 package indexingCommons;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import org.apache.hadoop.io.IntWritable;
 
 /**
  *
@@ -74,8 +74,13 @@ public class PostingList {
         return posting;
     }
     
-    public void mergePosting(PostingList newPosting) {
-        this.postingList.putAll(newPosting);
+    void addFullPosting(Integer documentId, IntWritable freq) {
+        int oldFreq;
+        oldFreq = 0;
+        if (this.postingList.containsKey(documentId)) {
+            oldFreq = this.postingList.get(documentId);
+        }
+        this.postingList.put(documentId, oldFreq+freq.get());
     }
     
 }

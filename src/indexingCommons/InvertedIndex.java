@@ -18,6 +18,8 @@ package indexingCommons;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
 /**
@@ -31,11 +33,23 @@ public class InvertedIndex {
         this.index = new HashMap<Text,PostingList>();
     }
     
-    public void addEntry(Text term, PostingList newPartialPosting) {
+    public void addPosting(Text term, Integer documentId, IntWritable freq) {
+        PostingList posting;
         if (this.index.containsKey(term)) {
-            PostingList oldPartialPosting = this.index.get(term);
-            oldPartialPosting.mergePosting(newPartialPosting);
+            posting = this.index.get(term);
+        } else {
+            posting = new PostingList();
         }
+        posting.addFullPosting(documentId, freq);
+        this.index.put(term, posting);
+    }
+    
+    public Set<Text> getVocabulary() {
+        return this.index.keySet();
+    }
+    
+    public PostingList getPosting(Text termKey) {
+        return this.index.get(termKey);
     }
     
 }

@@ -61,6 +61,9 @@ public class NutchIndexer extends Configured implements Tool {
         job.setMapperClass(NutchMap.class);
         job.setReducerClass(NutchReduce.class);
         
+        job.setMapOutputKeyClass(IntWritable.class);
+        job.setMapOutputValueClass(MapWritable.class);
+        
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
         

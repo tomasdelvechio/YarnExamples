@@ -17,6 +17,7 @@
 package indexingCommons;
 
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 
 /**
  *
@@ -30,5 +31,9 @@ public class CastingTypes {
     
     public IntWritable strToIntWr(String strNumber) {
         return new IntWritable(Integer.parseInt(strNumber));
+    }
+    
+    public Text strToText(String str) {
+        return new Text(str);
     }
 }

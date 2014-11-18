@@ -16,9 +16,13 @@
  */
 package nutchIndexer;
 
+import indexingCommons.CastingTypes;
 import indexingCommons.InvertedIndex;
 import indexingCommons.PostingList;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -31,6 +35,7 @@ import org.apache.hadoop.mapreduce.Reducer;
  */
 public class NutchReduce extends Reducer<IntWritable, MapWritable, Text, Text> {
     InvertedIndex invertedIndex;
+    CastingTypes ct = new CastingTypes();
 
     public NutchReduce() {
         this.invertedIndex = new InvertedIndex();
@@ -38,13 +43,20 @@ public class NutchReduce extends Reducer<IntWritable, MapWritable, Text, Text> {
     
     public void reduce(IntWritable docId, MapWritable documentAnalyzed, Context context)
       throws IOException, InterruptedException {
-        PostingList postingList = new PostingList();
         for (MapWritable.Entry<Writable, Writable> termEntry : documentAnalyzed.entrySet()) {
-            Text term = (Text) termEntry.getKey();
-            IntWritable freq = (IntWritable) termEntry.getValue();
-            postingList.addPosting(docId.get());
+            //Text term = (Text) termEntry.getKey();
+            Text term = new Text(termEntry.getKey().toString());
+            //IntWritable freq = (IntWritable) termEntry.getValue();
+            IntWritable freq = ct.strToIntWr(termEntry.getValue().toString());
+            Integer documentId = docId.get();
+            this.invertedIndex.addPosting(term, documentId, freq);
         }
-        String posting = postingList.toStringDE();
-        context.write(term, new Text(posting));
+    }
+    
+    @Override
+    public void cleanup(Context context) throws IOException, InterruptedException {
+        for (Text term : this.invertedIndex.getVocabulary()) {
+            context.write(term, ct.strToText(this.invertedIndex.getPosting(term).toStringDE()));
+        }
     }
 }

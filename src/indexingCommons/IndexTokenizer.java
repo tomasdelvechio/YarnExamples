@@ -86,7 +86,8 @@ public class IndexTokenizer {
     public boolean isValidToken(String token) {
         boolean isStopWord = this.stopWord.isStopWord(token);
         boolean isValidLong = minLongTerm <= token.length();
-        return (!isStopWord && isValidLong);
+        boolean isNull = (null == token);
+        return (!isStopWord && isValidLong && !isNull);
     }
     
     public String builToken(String candidateToken) {
