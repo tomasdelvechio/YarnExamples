@@ -58,16 +58,12 @@ public class IndexTokenizer {
      * @return  term Text The next valid token
      */
     public String nextToken() {
-        String token = null;
-        while (this.hasMoreTokens()) {
-            String candidateToken = this.builToken(this.tokenizer.nextToken());
-            if (this.isValidToken(candidateToken)) {
-                token = candidateToken;
-                break;
-            }
+        String candidateToken;
+        candidateToken = this.builToken(this.tokenizer.nextToken());
+        while (this.hasMoreTokens() && !this.isValidToken(candidateToken)) {
+            candidateToken = this.builToken(this.tokenizer.nextToken());
         }
-        
-        return token;
+        return candidateToken;
     }
     
     /**
