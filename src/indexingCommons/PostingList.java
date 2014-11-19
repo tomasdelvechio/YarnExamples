@@ -35,6 +35,15 @@ public class PostingList {
         this.postingList.put(docId, counter+1);
     }
     
+    public void addPosting(Integer documentId, IntWritable freq) {
+        int oldFreq;
+        oldFreq = 0;
+        if (this.postingList.containsKey(documentId)) {
+            oldFreq = this.postingList.get(documentId);
+        }
+        this.postingList.put(documentId, oldFreq+freq.get());
+    }
+    
     @Override
     public String toString() {
         String posting = "";
@@ -67,6 +76,7 @@ public class PostingList {
             }
         }
         
+        /* Elimina el ultimo ; al final de la posting */
         if (posting.length() > 0 && posting.charAt(posting.length()-1)==';') {
             posting = posting.substring(0, posting.length()-1);
         }
@@ -74,13 +84,13 @@ public class PostingList {
         return posting;
     }
     
-    void addFullPosting(Integer documentId, IntWritable freq) {
+    /*void addFullPosting(Integer documentId, IntWritable freq) {
         int oldFreq;
         oldFreq = 0;
         if (this.postingList.containsKey(documentId)) {
             oldFreq = this.postingList.get(documentId);
         }
         this.postingList.put(documentId, oldFreq+freq.get());
-    }
+    }*/
     
 }

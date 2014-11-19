@@ -18,11 +18,7 @@ package nutchIndexer;
 
 import indexingCommons.CastingTypes;
 import indexingCommons.InvertedIndex;
-import indexingCommons.PostingList;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -41,15 +37,16 @@ public class NutchReduce extends Reducer<IntWritable, MapWritable, Text, Text> {
         this.invertedIndex = new InvertedIndex();
     }
     
-    public void reduce(IntWritable docId, MapWritable documentAnalyzed, Context context)
+    @Override
+    public void reduce(IntWritable docId, Iterable<MapWritable> documentsAnalyzed, Context context)
       throws IOException, InterruptedException {
-        for (MapWritable.Entry<Writable, Writable> termEntry : documentAnalyzed.entrySet()) {
-            //Text term = (Text) termEntry.getKey();
-            Text term = new Text(termEntry.getKey().toString());
-            //IntWritable freq = (IntWritable) termEntry.getValue();
-            IntWritable freq = ct.strToIntWr(termEntry.getValue().toString());
-            Integer documentId = docId.get();
-            this.invertedIndex.addPosting(term, documentId, freq);
+        for (MapWritable documentAnalyzed : documentsAnalyzed) {
+            for (MapWritable.Entry<Writable, Writable> termEntry : documentAnalyzed.entrySet()) {
+                Text term = (Text) termEntry.getKey();
+                IntWritable freq = (IntWritable) termEntry.getValue();
+                Integer documentId = docId.get();
+                this.invertedIndex.addPosting(term, documentId, freq);
+            }
         }
     }
     

@@ -24,6 +24,11 @@ import org.apache.hadoop.io.Text;
  * @author tomas
  */
 public class CastingTypes {
+    public final IntWritable cero;
+    
+    public CastingTypes() {
+        this.cero = new IntWritable(0);
+    }
     
     public IntWritable intToIntWr(int number) {
         return new IntWritable(number);

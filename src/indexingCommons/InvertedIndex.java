@@ -16,9 +16,9 @@
  */
 package indexingCommons;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
@@ -27,10 +27,10 @@ import org.apache.hadoop.io.Text;
  * @author tomas
  */
 public class InvertedIndex {
-    Map<Text,PostingList> index;
+    public Map<Text,PostingList> index;
 
     public InvertedIndex() {
-        this.index = new HashMap<Text,PostingList>();
+        this.index = new TreeMap<Text,PostingList>();
     }
     
     public void addPosting(Text term, Integer documentId, IntWritable freq) {
@@ -40,7 +40,7 @@ public class InvertedIndex {
         } else {
             posting = new PostingList();
         }
-        posting.addFullPosting(documentId, freq);
+        posting.addPosting(documentId, freq);
         this.index.put(term, posting);
     }
     

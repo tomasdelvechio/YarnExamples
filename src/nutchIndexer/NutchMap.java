@@ -33,47 +33,32 @@ import org.apache.hadoop.mapreduce.Mapper;
 public class NutchMap extends Mapper<LongWritable, Text, IntWritable, MapWritable> {
     IndexTokenizer tokenizer;
     MapWritable documentAnalyzed;
-    CastingTypes ct = new CastingTypes();
-    IntWritable cero = ct.intToIntWr(0);
-    IntWritable uno = ct.intToIntWr(1);
+    CastingTypes ct;
+    IntWritable cero;
 
     public NutchMap() throws IOException {
+        this.ct = new CastingTypes();
+        this.cero = ct.cero;
         this.tokenizer = new IndexTokenizer();
-        this.documentAnalyzed = new MapWritable();
     }
     
     @Override
     public void map(LongWritable key, Text value, Mapper.Context context) throws IOException, InterruptedException {
         TrecOLParser document = new TrecOLParser(value.toString());
+        documentAnalyzed = new MapWritable();
         if (document.isParsed()) {
             this.tokenizer.tokenize(document.getDocContent());
             while (this.tokenizer.hasMoreTokens()) {
                 IntWritable counter = cero;
                 String newTerm = this.tokenizer.nextToken();
-                if( ! (newTerm == null) ) {
-                    Text term = new Text(newTerm);
-                    if (this.documentAnalyzed.containsKey(term)) {
-                        counter = (IntWritable)this.documentAnalyzed.get(term);
-                    }
-                    this.documentAnalyzed.put(term, ct.intToIntWr(counter.get()+1));
-                } else {
-                    System.out.println("Doc Id");
-                    System.out.println(document.getDocId());
-                    System.out.println("Termino");
-                    System.out.println(newTerm);
+                Text term = new Text(newTerm);
+                if (documentAnalyzed.containsKey(term)) {
+                    counter = this.ct.strToIntWr(documentAnalyzed.get(term).toString());
                 }
-                /*Text term = null;
-                try {
-                    term = new Text(this.tokenizer.nextToken());
-                } catch (NullPointerException e) {
-                    System.out.println("Exception");
-                    System.out.println(document.getDocId());
-                }*/
-                
-                
+                documentAnalyzed.put(term, ct.intToIntWr(counter.get()+1));
             }
-            if ( ! this.documentAnalyzed.isEmpty()) {
-                context.write(new IntWritable(Integer.parseInt(document.getDocId())), this.documentAnalyzed);
+            if ( ! documentAnalyzed.isEmpty()) {
+                context.write(this.ct.strToIntWr(document.getDocId()), documentAnalyzed);
             }
         }
     }
