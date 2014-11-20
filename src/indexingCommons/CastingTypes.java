@@ -41,4 +41,8 @@ public class CastingTypes {
     public Text strToText(String str) {
         return new Text(str);
     }
+    
+    public int strToInt(String strNumber) {
+        return Integer.parseInt(strNumber);
+    }
 }
