@@ -33,6 +33,7 @@ public class IndexTokenizer {
     StopWords stopWord;
     Stemmer stemmer;
     private static final Pattern REGEX_PATTERN = Pattern.compile("[^\\p{Alnum}]+");
+    private String candidateToken;
 
     public IndexTokenizer() throws IOException {
         this.minLongTerm = 3;
@@ -54,24 +55,30 @@ public class IndexTokenizer {
     }
     
     /**
-     * This method return the next token, skipping others not valid tokens.
+     * This method return the next token.
      * @return  term Text The next valid token
      */
     public String nextToken() {
-        String candidateToken;
-        candidateToken = this.builToken(this.tokenizer.nextToken());
-        while (this.hasMoreTokens() && !this.isValidToken(candidateToken)) {
-            candidateToken = this.builToken(this.tokenizer.nextToken());
-        }
-        return candidateToken;
+        return this.candidateToken;
     }
     
     /**
-     * Method for consult if some token is present
+     * Method for consult if more tokens are present, skipping others not valid tokens.
      * @return boolean return True if some token is present, False in other case
      */
     public boolean hasMoreTokens() {
-        return this.tokenizer.hasMoreTokens();
+        if (this.tokenizer.hasMoreTokens()) {
+            String newToken;
+            newToken = this.builToken(this.tokenizer.nextToken());
+            while (this.tokenizer.hasMoreTokens() && !this.isValidToken(newToken)) {
+                newToken = this.builToken(this.tokenizer.nextToken());
+            }
+            if (this.isValidToken(newToken)) {
+                this.candidateToken = newToken;
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -82,7 +89,7 @@ public class IndexTokenizer {
     public boolean isValidToken(String token) {
         boolean isStopWord = this.stopWord.isStopWord(token);
         boolean isValidLong = minLongTerm <= token.length();
-        boolean isNull = (null == token);
+        boolean isNull = (null == token); // This is right for compare with null?
         return (!isStopWord && isValidLong && !isNull);
     }
     
