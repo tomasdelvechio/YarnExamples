@@ -23,28 +23,26 @@ import org.apache.hadoop.io.Text;
  *
  * @author tomas
  */
-public class CastingTypes {
-    public final IntWritable zero;
-    public final IntWritable one;
+final public class CastingTypes {
+    static public final IntWritable zero = new IntWritable(0);
+    static public final IntWritable one = new IntWritable(1);
     
-    public CastingTypes() {
-        this.zero = new IntWritable(0);
-        this.one = new IntWritable(1);
+    private CastingTypes() {
     }
     
-    public IntWritable intToIntWr(int number) {
+    static public IntWritable intToIntWr(int number) {
         return new IntWritable(number);
     }
     
-    public IntWritable strToIntWr(String strNumber) {
+    static public IntWritable strToIntWr(String strNumber) {
         return new IntWritable(Integer.parseInt(strNumber));
     }
     
-    public Text strToText(String str) {
+    static public Text strToText(String str) {
         return new Text(str);
     }
     
-    public int strToInt(String strNumber) {
+    static public int strToInt(String strNumber) {
         return Integer.parseInt(strNumber);
     }
 }

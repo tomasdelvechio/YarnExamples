@@ -28,10 +28,8 @@ import org.apache.hadoop.io.IntWritable;
  */
 public class PostingList {
     Map<Integer,Integer> postingList;
-    CastingTypes ct;
 
     public PostingList() {
-        this.ct = new CastingTypes();
         this.postingList = new TreeMap<Integer,Integer>();
     }
     
@@ -40,7 +38,7 @@ public class PostingList {
      * @param docId Document Id to add in the posting.
      */
     public void addPosting(Integer docId) {
-        this.addPosting(docId, ct.one);
+        this.addPosting(docId, CastingTypes.one);
     }
     
     /**

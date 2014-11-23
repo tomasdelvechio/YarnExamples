@@ -31,7 +31,6 @@ import org.apache.hadoop.mapreduce.Reducer;
  */
 public class NutchReduce extends Reducer<IntWritable, MapWritable, Text, Text> {
     InvertedIndex invertedIndex;
-    CastingTypes ct = new CastingTypes();
 
     public NutchReduce() {
         this.invertedIndex = new InvertedIndex();
@@ -53,7 +52,7 @@ public class NutchReduce extends Reducer<IntWritable, MapWritable, Text, Text> {
     @Override
     public void cleanup(Context context) throws IOException, InterruptedException {
         for (Text term : this.invertedIndex.getVocabulary()) {
-            context.write(term, ct.strToText(this.invertedIndex.getPosting(term).toStringDE()));
+            context.write(term, CastingTypes.strToText(this.invertedIndex.getPosting(term).toStringDE()));
         }
     }
 }

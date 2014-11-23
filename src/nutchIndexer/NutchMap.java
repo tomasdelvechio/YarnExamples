@@ -33,12 +33,8 @@ import org.apache.hadoop.mapreduce.Mapper;
 public class NutchMap extends Mapper<LongWritable, Text, IntWritable, MapWritable> {
     IndexTokenizer tokenizer;
     MapWritable documentAnalyzed;
-    CastingTypes ct;
-    IntWritable cero;
 
     public NutchMap() throws IOException {
-        this.ct = new CastingTypes();
-        this.cero = ct.zero;
         this.tokenizer = new IndexTokenizer();
     }
     
@@ -49,16 +45,16 @@ public class NutchMap extends Mapper<LongWritable, Text, IntWritable, MapWritabl
         if (document.isParsed()) {
             this.tokenizer.tokenize(document.getDocContent());
             while (this.tokenizer.hasMoreTokens()) {
-                IntWritable counter = cero;
+                IntWritable counter = CastingTypes.zero;
                 String newTerm = this.tokenizer.nextToken();
                 Text term = new Text(newTerm);
                 if (documentAnalyzed.containsKey(term)) {
-                    counter = this.ct.strToIntWr(documentAnalyzed.get(term).toString());
+                    counter = CastingTypes.strToIntWr(documentAnalyzed.get(term).toString());
                 }
-                documentAnalyzed.put(term, ct.intToIntWr(counter.get()+1));
+                documentAnalyzed.put(term, CastingTypes.intToIntWr(counter.get()+1));
             }
             if ( ! documentAnalyzed.isEmpty()) {
-                context.write(this.ct.strToIntWr(document.getDocId()), documentAnalyzed);
+                context.write(CastingTypes.strToIntWr(document.getDocId()), documentAnalyzed);
             }
         }
     }
