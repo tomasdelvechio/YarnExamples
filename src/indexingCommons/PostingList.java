@@ -21,20 +21,34 @@ import java.util.TreeMap;
 import org.apache.hadoop.io.IntWritable;
 
 /**
- *
+ * This class allow build a generic posting list structure, without reference to
+ * any term. Can generate string to the structure and optionally apply delta-gap
+ * encoding to the output.
  * @author tomas
  */
 public class PostingList {
-    Map<Integer,Integer> postingList = new TreeMap<Integer,Integer>();
-    
-    public void addPosting(Integer docId) {
-        int counter = 0;
-        if (this.postingList.containsKey(docId)) {
-            counter = this.postingList.get(docId);
-        }
-        this.postingList.put(docId, counter+1);
+    Map<Integer,Integer> postingList;
+    CastingTypes ct;
+
+    public PostingList() {
+        this.ct = new CastingTypes();
+        this.postingList = new TreeMap<Integer,Integer>();
     }
     
+    /**
+     * Add a posting to the list, assume frequency 1.
+     * @param docId Document Id to add in the posting.
+     */
+    public void addPosting(Integer docId) {
+        this.addPosting(docId, ct.one);
+    }
+    
+    /**
+     * Generic method to add a document to the posting list, with arbitrary 
+     * frequency.
+     * @param documentId Document identifier
+     * @param freq Number of occurrences of term in Document
+     */
     public void addPosting(Integer documentId, IntWritable freq) {
         int oldFreq;
         oldFreq = 0;
@@ -44,6 +58,10 @@ public class PostingList {
         this.postingList.put(documentId, oldFreq+freq.get());
     }
     
+    /**
+     * Convert to string a posting list structure for dump in Inverted Index.
+     * @return posting String Return the string representation of the posting.
+     */
     @Override
     public String toString() {
         String posting = "";
@@ -51,6 +69,7 @@ public class PostingList {
             posting += entry.getKey() + ":" + entry.getValue() + ";";
         }
         
+        /* delete the last semicolon of string */
         if (posting.length() > 0 && posting.charAt(posting.length()-1)==';') {
             posting = posting.substring(0, posting.length()-1);
         }
@@ -76,21 +95,11 @@ public class PostingList {
             }
         }
         
-        /* Elimina el ultimo ; al final de la posting */
+        /* delete the last semicolon of string */
         if (posting.length() > 0 && posting.charAt(posting.length()-1)==';') {
             posting = posting.substring(0, posting.length()-1);
         }
         
         return posting;
     }
-    
-    /*void addFullPosting(Integer documentId, IntWritable freq) {
-        int oldFreq;
-        oldFreq = 0;
-        if (this.postingList.containsKey(documentId)) {
-            oldFreq = this.postingList.get(documentId);
-        }
-        this.postingList.put(documentId, oldFreq+freq.get());
-    }*/
-    
 }

@@ -38,7 +38,7 @@ public class NutchMap extends Mapper<LongWritable, Text, IntWritable, MapWritabl
 
     public NutchMap() throws IOException {
         this.ct = new CastingTypes();
-        this.cero = ct.cero;
+        this.cero = ct.zero;
         this.tokenizer = new IndexTokenizer();
     }
     
