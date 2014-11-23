@@ -63,11 +63,6 @@ public class Indexer extends Configured implements Tool {
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
         
-        /* 3er Parametro: Numero de reducers */
-        if (args.length > 2) {
-            job.setNumReduceTasks(Integer.parseInt(args[2]));
-        }
-        
         return 1;
     }
 }

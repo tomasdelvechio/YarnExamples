@@ -23,3 +23,11 @@ If the example finish success, you'll can consulting the result:
 ```
 hdfs dfs -cat /user/hduser/OutputFolder/part-r-00000
 ```
+
+## Tips
+
+### Set arbitrary reducers number: mapreduce.job.reduces
+
+```
+hadoop jar /path_to_jar_file/YarnExamples.jar dgIndexer.DgIndexer -Dmapreduce.job.reduces=2 /user/hduser/data/TrecFile.txt /user/hduser/OutputFolder
+```
