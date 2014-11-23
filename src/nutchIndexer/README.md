@@ -12,6 +12,8 @@ term\docId1:Freq1;docId2:Freq2;docId3:Freq3;docId4:Freq4...
 
 The file is sorted by word and docId. In the future, will be implemented an order by Freq (i.e. support early termination techniques for retrieval)
 
+NOTE: Nutch Indexer will not be update. Reasons in #24.
+
 # References 
 
 [1]: [Nutch Project - MapReduce](http://wiki.apache.org/nutch/MapReduce)
