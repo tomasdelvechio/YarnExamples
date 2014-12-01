@@ -45,4 +45,8 @@ final public class CastingTypes {
     static public int strToInt(String strNumber) {
         return Integer.parseInt(strNumber);
     }
+    
+    static public Text intToText(Integer number) {
+        return new Text(number.toString());
+    }
 }
