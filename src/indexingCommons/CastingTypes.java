@@ -20,7 +20,7 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
 /**
- *
+ * Class to help in the casting into hadoop to java types
  * @author tomas
  */
 final public class CastingTypes {
