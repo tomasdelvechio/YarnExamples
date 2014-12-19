@@ -18,6 +18,7 @@ package indexingCommons;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -61,6 +62,12 @@ public class Indexer extends Configured implements Tool {
         job.setOutputFormatClass(TextOutputFormat.class);
         
         FileInputFormat.addInputPath(job, new Path(args[0]));
+        
+        FileSystem fs = FileSystem.get(conf);
+        if(fs.exists(new Path(args[1]))){
+           /*If exist delete the output path*/
+           fs.delete(new Path(args[1]),true);
+        }
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
         
         return 1;
